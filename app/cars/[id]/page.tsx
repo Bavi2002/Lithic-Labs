@@ -36,6 +36,8 @@ export default function CarDetails() {
   return (
     <div className="max-w-2xl mx-auto mt-4">
       <h1 className="text-2xl font-bold">{car.name} - {car.model}</h1>
+        <h2 className="text-lg font-semibold">{car.availability ? 'Available' : 'Not Available'}</h2>
+        <p className="mt-2">{car.description}</p>
       <p>Price: ${car.price}/day</p>
       <BookingForm carId={car.id} />
     </div>

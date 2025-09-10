@@ -6,7 +6,9 @@ export default function CarCard({ car }: { car: Car }) {
   return (
     <div className="border p-4 rounded-lg hover:shadow-lg transition-shadow">
       <h2 className="text-xl font-bold">{car.name} - {car.model}</h2>
+      <h2 className="text-lg font-semibold">{car.availability ? 'Available' : 'Not Available'}</h2>
       <p>Price: ${car.price}/day</p>
+        <p className="mt-2">{car.description}</p>
       <Link href={`/cars/${car.id}`} className="mt-2 inline-block bg-blue-500 text-white p-2 rounded">
         View Details
       </Link>

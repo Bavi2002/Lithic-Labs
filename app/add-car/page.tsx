@@ -8,13 +8,14 @@ export default function AddCar() {
   const [name, setName] = useState('');
   const [model, setModel] = useState('');
   const [price, setPrice] = useState('');
+    const [description, setDescription] = useState('');
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const carData = { name, model, price: parseFloat(price) };
+      const carData = { name, model, price: parseFloat(price), description };
       await addCar(carData);
       alert('Car added successfully!');
       router.push('/');
@@ -42,6 +43,13 @@ export default function AddCar() {
             value={model}
             onChange={(e) => setModel(e.target.value)}
             placeholder="Model"
+            className="w-full p-2 border"
+            required
+          />
+          <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Description"
             className="w-full p-2 border"
             required
           />

@@ -43,13 +43,24 @@ export const createBooking = async (bookingData: {
   return { ...data, id: data.id };
 };
 
-export const addCar = async (carData: { name: string; model: string; price: number }): Promise<Car> => {
+export const addCar = async (carData: { name: string; model: string; price: number; description: string }): Promise<Car> => {
   const response = await fetch('http://localhost:5000/api/cars', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(carData),
   });
   if (!response.ok) throw new Error('Failed to add car');
+  const { data } = await response.json();
+  return { ...data, id: data.id };
+};
+
+export const updateCarAvailability = async (id: string, availability: boolean): Promise<Car> => {
+  const response = await fetch(`http://localhost:5000/api/cars/${id}/availability`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ availability }),
+  });
+  if (!response.ok) throw new Error('Failed to update car availability');
   const { data } = await response.json();
   return { ...data, id: data.id };
 };

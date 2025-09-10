@@ -3,9 +3,10 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useState } from 'react';
-import { createBooking } from '../lib/api';
+import { createBooking, fetchCar, updateCarAvailability } from '../lib/api';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
+import { Car } from '../types/car';
 
 const schema = z.object({
   startDate: z.string()
@@ -22,6 +23,7 @@ type FormData = z.input<typeof schema>;
 export default function BookingForm({ carId }: { carId: string }) {
   const { user } = useSelector((state: RootState) => state.auth);
   const [error, setError] = useState<string | null>(null);
+  const [car, setCar] = useState<Car | null>(null);
   const {
     register,
     handleSubmit,
@@ -45,7 +47,16 @@ export default function BookingForm({ carId }: { carId: string }) {
         startDate: new Date(data.startDate),
         endDate: new Date(data.endDate),
       };
-      await createBooking(bookingData);
+      await fetchCar(carId);
+      setCar(car);
+      if(car && !car.availability){
+        setError('Car is not available for booking');
+        return;
+      }else{
+     if( await createBooking(bookingData)){
+        await updateCarAvailability(carId, false);
+     }
+        }
       alert('Booking successful!');
       setError(null);
     } catch (err) {
