@@ -24,14 +24,38 @@ export default function BookingForm({ carId }: { carId: string }) {
   const { user } = useSelector((state: RootState) => state.auth);
   const [error, setError] = useState<string | null>(null);
   const [car, setCar] = useState<Car | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  
   const {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
-    defaultValues: { startDate: '', endDate: '' }, // Initialize with empty strings
+    defaultValues: { startDate: '', endDate: '' },
   });
+
+  const startDate = watch('startDate');
+  const endDate = watch('endDate');
+
+  // Calculate total days and price
+  const calculateBookingDetails = () => {
+    if (startDate && endDate && car) {
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+      const diffTime = Math.abs(end.getTime() - start.getTime());
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      return {
+        days: diffDays,
+        totalPrice: diffDays * car.price
+      };
+    }
+    return null;
+  };
+
+  const bookingDetails = calculateBookingDetails();
 
   const onSubmit = async (data: FormData) => {
     if (!user?.uid) {
@@ -40,6 +64,9 @@ export default function BookingForm({ carId }: { carId: string }) {
     }
 
     try {
+      setIsLoading(true);
+      setError(null);
+      
       // Convert form data to the expected format for createBooking
       const bookingData = {
         userId: user.uid,
@@ -47,50 +74,181 @@ export default function BookingForm({ carId }: { carId: string }) {
         startDate: new Date(data.startDate),
         endDate: new Date(data.endDate),
       };
+      
       await fetchCar(carId);
       setCar(car);
+      
       if(car && !car.availability){
         setError('Car is not available for booking');
         return;
-      }else{
-     if( await createBooking(bookingData)){
-        await updateCarAvailability(carId, false);
-     }
+      } else {
+        if(await createBooking(bookingData)){
+          await updateCarAvailability(carId, false);
+          setSuccess(true);
         }
-      alert('Booking successful!');
-      setError(null);
+      }
+      
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'An unexpected error occurred';
       setError(`Failed to create booking: ${errorMessage}`);
+    } finally {
+      setIsLoading(false);
     }
   };
 
+  if (success) {
+    return (
+      <div className="bg-slate-900 border border-green-500/30 rounded-xl p-6 mt-6">
+        <div className="text-center">
+          <div className="text-green-400 text-5xl mb-4">✅</div>
+          <h3 className="text-white text-xl font-semibold mb-2">Booking Confirmed!</h3>
+          <p className="text-slate-300 mb-4">
+            Your car has been successfully booked. You will receive a confirmation email shortly.
+          </p>
+          <button
+            onClick={() => window.location.href = '/bookings'}
+            className="bg-green-600 hover:bg-green-500 text-white px-6 py-2 rounded-lg transition-colors duration-200"
+          >
+            View My Bookings
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="mt-4 space-y-4">
-      <div>
-        <input
-          type="date"
-          {...register('startDate')}
-          className="w-full p-2 border rounded"
-        />
-        {errors.startDate && <p className="text-red-500 text-sm mt-1">{errors.startDate.message}</p>}
+    <div className="bg-slate-900 border border-slate-700 rounded-xl p-6 mt-6">
+      <div className="mb-6">
+        <h3 className="text-white text-xl font-semibold mb-2">Book This Vehicle</h3>
+        <p className="text-slate-400 text-sm">
+          Select your rental dates to proceed with the booking
+        </p>
       </div>
-      <div>
-        <input
-          type="date"
-          {...register('endDate')}
-          className="w-full p-2 border rounded"
-        />
-        {errors.endDate && <p className="text-red-500 text-sm mt-1">{errors.endDate.message}</p>}
-      </div>
-      <button
-        type="submit"
-        className="w-full p-2 bg-green-500 text-white rounded hover:bg-green-600 disabled:bg-gray-400"
-        disabled={!user}
-      >
-        Book Now
-      </button>
-      {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
-    </form>
+
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        {/* Start Date */}
+        <div>
+          <label className="block text-sm font-medium text-slate-300 mb-2">
+            Pick-up Date
+          </label>
+          <div className="relative">
+            <input
+              type="date"
+              {...register('startDate')}
+              min={new Date().toISOString().split('T')[0]}
+              className="w-full px-4 py-3 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+            />
+            <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+              <svg className="h-5 w-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </div>
+          </div>
+          {errors.startDate && (
+            <p className="text-red-400 text-sm mt-1 flex items-center">
+              <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              {errors.startDate.message}
+            </p>
+          )}
+        </div>
+
+        {/* End Date */}
+        <div>
+          <label className="block text-sm font-medium text-slate-300 mb-2">
+            Return Date
+          </label>
+          <div className="relative">
+            <input
+              type="date"
+              {...register('endDate')}
+              min={startDate || new Date().toISOString().split('T')[0]}
+              className="w-full px-4 py-3 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+            />
+            <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+              <svg className="h-5 w-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </div>
+          </div>
+          {errors.endDate && (
+            <p className="text-red-400 text-sm mt-1 flex items-center">
+              <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              {errors.endDate.message}
+            </p>
+          )}
+        </div>
+
+        {/* Booking Summary */}
+        {bookingDetails && (
+          <div className="bg-slate-800/50 border border-slate-600 rounded-lg p-4">
+            <h4 className="text-white font-medium mb-3">Booking Summary</h4>
+            <div className="space-y-2 text-sm">
+              <div className="flex justify-between text-slate-300">
+                <span>Rental Duration:</span>
+                <span className="text-white">{bookingDetails.days} day{bookingDetails.days !== 1 ? 's' : ''}</span>
+              </div>
+              <div className="flex justify-between text-slate-300">
+                <span>Daily Rate:</span>
+                <span className="text-white">${car?.price || 0}</span>
+              </div>
+              <div className="border-t border-slate-600 pt-2 mt-2">
+                <div className="flex justify-between font-semibold">
+                  <span className="text-slate-300">Total Amount:</span>
+                  <span className="text-green-400 text-lg">${bookingDetails.totalPrice}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Error Message */}
+        {error && (
+          <div className="bg-red-900/20 border border-red-500/30 rounded-lg p-4 flex items-start">
+            <svg className="w-5 h-5 text-red-400 mt-0.5 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <p className="text-red-400 text-sm">{error}</p>
+          </div>
+        )}
+
+        {/* Auth Warning */}
+        {!user && (
+          <div className="bg-yellow-900/20 border border-yellow-500/30 rounded-lg p-4 flex items-start">
+            <svg className="w-5 h-5 text-yellow-400 mt-0.5 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+            </svg>
+            <div>
+              <p className="text-yellow-400 text-sm font-medium">Login Required</p>
+              <p className="text-yellow-300 text-sm mt-1">You must be logged in to book a car.</p>
+            </div>
+          </div>
+        )}
+
+        {/* Submit Button */}
+        <button
+          type="submit"
+          disabled={!user || isLoading}
+          className="w-full bg-green-600 hover:bg-green-500 disabled:bg-slate-600 disabled:cursor-not-allowed text-white font-medium py-3 px-4 rounded-lg transition-all duration-200 hover:shadow-lg hover:shadow-green-500/25 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-slate-900 flex items-center justify-center"
+        >
+          {isLoading ? (
+            <>
+              <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent mr-2"></div>
+              Processing...
+            </>
+          ) : (
+            <>
+              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+              Book Now
+            </>
+          )}
+        </button>
+      </form>
+    </div>
   );
 }
