@@ -19,6 +19,7 @@ export default function CarDetails() {
           const data = await fetchCar(id as string);
           setCar(data);
         } catch (err) {
+            console.error(err);
           setError('Failed to load car');
         } finally {
           setLoading(false);
@@ -36,7 +37,7 @@ export default function CarDetails() {
     <div className="max-w-2xl mx-auto mt-4">
       <h1 className="text-2xl font-bold">{car.name} - {car.model}</h1>
       <p>Price: ${car.price}/day</p>
-      <BookingForm carId={car._id} />
+      <BookingForm carId={car.id} />
     </div>
   );
 }

@@ -20,6 +20,7 @@ export default function Bookings() {
           const data = await fetchBookings(user.uid);
           setBookings(data);
         } catch (err) {
+            console.error(err);
           setError('Failed to load bookings');
         } finally {
           setLoading(false);
@@ -41,7 +42,7 @@ export default function Bookings() {
         ) : (
           <ul className="space-y-2">
             {bookings.map((booking) => (
-              <li key={booking._id} className="border p-2">
+              <li key={booking.id} className="border p-2">
                 Car: {booking.carId} | {new Date(booking.startDate).toLocaleDateString()} to {new Date(booking.endDate).toLocaleDateString()}
               </li>
             ))}

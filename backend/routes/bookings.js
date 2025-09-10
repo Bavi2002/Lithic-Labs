@@ -1,26 +1,26 @@
 import { Router } from 'express';
-import Booking from '../models/booking.js';
-
 const router = Router();
+import { db } from '../config/firebase.js';
 
 router.get('/', async (req, res) => {
-  try {
-    const bookings = await Booking.find({ userId: req.query.userId });
-    res.json({ data: bookings });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+  const userId = req.query.userId;
+  if (!userId) return res.status(400).json({ error: 'User ID is required' });
+  const snapshot = await db.collection('bookings').where('userId', '==', userId).get();
+  const bookings = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  res.json({ data: bookings });
 });
 
 router.post('/', async (req, res) => {
-  try {
-    const { userId, carId, startDate, endDate } = req.body;
-    const booking = new Booking({ userId, carId, startDate, endDate });
-    await booking.save();
-    res.status(201).json({ data: booking });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+  const { userId, carId, startDate, endDate } = req.body;
+  const newBooking = {
+    userId,
+    carId,
+    startDate: new Date(startDate),
+    endDate: new Date(endDate),
+  };
+  const docRef = await db.collection('bookings').add(newBooking);
+  const doc = await docRef.get();
+  res.status(201).json({ data: { id: doc.id, ...doc.data() } });
 });
 
 export default router;

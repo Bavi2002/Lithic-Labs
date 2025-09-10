@@ -17,26 +17,32 @@ export default function Register() {
     e.preventDefault();
     dispatch(setLoading(true));
 
-    try {
-      const userCredential = await signUp(email, password);
-      dispatch(setUser(userCredential.user));
-      router.push("/bookings");
-    } catch (err: any) {
-      let errorMessage = "Failed to register";
-      console.log(err);
-      if (err?.code === "auth/email-already-in-use") {
-        errorMessage = "This email is already in use.";
-      } else if (err?.code === "auth/invalid-email") {
-        errorMessage = "Invalid email address.";
-      } else if (err?.code === "auth/weak-password") {
-        errorMessage = "Password should be at least 6 characters.";
-      } else if (err?.message) {
-        errorMessage = err.message;
-      }
+  try {
+  const userCredential = await signUp(email, password);
+  dispatch(setUser(userCredential.user));
+  router.push("/bookings");
+} catch (err: unknown) {
+  let errorMessage = "Failed to register";
+  console.log(err);
 
-      dispatch(setError(errorMessage));
+  if (typeof err === "object" && err !== null) {
+    const error = err as { code?: string; message?: string };
+
+    if (error.code === "auth/email-already-in-use") {
+      errorMessage = "This email is already in use.";
+    } else if (error.code === "auth/invalid-email") {
+      errorMessage = "Invalid email address.";
+    } else if (error.code === "auth/weak-password") {
+      errorMessage = "Password should be at least 6 characters.";
+    } else if (error.message) {
+      errorMessage = error.message;
     }
-  };
+  }
+
+  dispatch(setError(errorMessage));
+}
+    };
+
 
   return (
     <div className="max-w-md mx-auto mt-10">

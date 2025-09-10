@@ -21,21 +21,26 @@ export default function Login() {
       const userCredential = await logIn(email, password);
       dispatch(setUser(userCredential.user));
       router.push("/bookings");
-    } catch (err: any) {
-      let errorMessage = "Failed to log in"; 
+    } catch (err: unknown) {
+  let errorMessage = "Failed to log in";
 
-      if (err?.code === "auth/user-not-found") {
-        errorMessage = "No account found with this email.";
-      } else if (err?.code === "auth/invalid-credential") {
-        errorMessage = "Invalid credentials provided.";
-      } else if (err?.code === "auth/invalid-email") {
-        errorMessage = "Invalid email address.";
-      } else if (err?.message) {
-        errorMessage = err.message;
-      }
+  if (typeof err === "object" && err !== null) {
+    const error = err as { code?: string; message?: string };
 
-      dispatch(setError(errorMessage));
+    if (error.code === "auth/user-not-found") {
+      errorMessage = "No account found with this email.";
+    } else if (error.code === "auth/invalid-credential") {
+      errorMessage = "Invalid credentials provided.";
+    } else if (error.code === "auth/invalid-email") {
+      errorMessage = "Invalid email address.";
+    } else if (error.message) {
+      errorMessage = error.message;
     }
+  }
+
+  dispatch(setError(errorMessage));
+}
+
   };
 
   return (

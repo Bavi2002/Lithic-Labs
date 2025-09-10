@@ -1,36 +1,25 @@
 import { Router } from 'express';
-import Car from '../models/car.js';
-
 const router = Router();
+import { db } from '../config/firebase.js';
 
 router.get('/', async (req, res) => {
-  try {
-    const cars = await Car.find();
-    res.json({ data: cars });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+  const snapshot = await db.collection('cars').get();
+  const cars = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  res.json({ data: cars });
 });
 
 router.get('/:id', async (req, res) => {
-  try {
-    const car = await Car.findById(req.params.id);
-    if (!car) return res.status(404).json({ error: 'Car not found' });
-    res.json({ data: car });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+  const doc = await db.collection('cars').doc(req.params.id).get();
+  if (!doc.exists) return res.status(404).json({ error: 'Car not found' });
+  res.json({ data: { id: doc.id, ...doc.data() } });
 });
 
 router.post('/', async (req, res) => {
-  try {
-    const { name, model, price } = req.body;
-    const car = new Car({ name, model, price, availability: true });
-    await car.save();
-    res.status(201).json({ data: car });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+  const { name, model, price } = req.body;
+  const newCar = { name, model, price, availability: true };
+  const docRef = await db.collection('cars').add(newCar);
+  const doc = await docRef.get();
+  res.status(201).json({ data: { id: doc.id, ...doc.data() } });
 });
 
 export default router;

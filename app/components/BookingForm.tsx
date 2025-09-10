@@ -26,7 +26,6 @@ export default function BookingForm({ carId }: { carId: string }) {
     register,
     handleSubmit,
     formState: { errors },
-    setError: setFormError,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: { startDate: '', endDate: '' }, // Initialize with empty strings

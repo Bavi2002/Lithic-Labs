@@ -19,6 +19,7 @@ export default function Home() {
         setCars(data);
         setFilteredCars(data);
       } catch (err) {
+        console.error(err);
         setError('Failed to load cars');
       } finally {
         setLoading(false);
@@ -48,7 +49,7 @@ export default function Home() {
       />
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {filteredCars.map((car) => (
-          <CarCard key={car._id} car={car} />
+          <CarCard key={car.id} car={car} />
         ))}
       </div>
     </div>
