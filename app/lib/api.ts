@@ -1,0 +1,50 @@
+import { Car } from '../types/car';
+import { Booking } from '../types/booking';
+
+export const fetchCars = async (): Promise<Car[]> => {
+    const response = await fetch('http://localhost:5000/api/cars');
+    if (!response.ok) throw new Error('Failed to fetch cars');
+    const { data } = await response.json();
+    return data;
+};
+
+export const fetchCar = async (id: string): Promise<Car> => {
+    const response = await fetch(`http://localhost:5000/api/cars/${id}`);
+    if (!response.ok) throw new Error('Failed to fetch car');
+    const { data } = await response.json();
+    return data;
+};
+
+export const fetchBookings = async (userId: string): Promise<Booking[]> => {
+    const response = await fetch(`http://localhost:5000/api/bookings?userId=${userId}`);
+    if (!response.ok) throw new Error('Failed to fetch bookings');
+    const { data } = await response.json();
+    return data;
+};
+
+export const createBooking = async (bookingData: {
+    userId: string;
+    carId: string;
+    startDate: Date;
+    endDate: Date;
+}): Promise<Booking> => {
+    const response = await fetch('http://localhost:5000/api/bookings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(bookingData),
+    });
+    if (!response.ok) throw new Error('Failed to create booking');
+    const { data } = await response.json();
+    return data;
+};
+
+export const addCar = async (carData: { name: string; model: string; price: number }): Promise<Car> => {
+  const response = await fetch('http://localhost:5000/api/cars', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(carData),
+  });
+  if (!response.ok) throw new Error('Failed to add car');
+  const { data } = await response.json();
+  return data;
+};
