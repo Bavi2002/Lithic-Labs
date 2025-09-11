@@ -6,8 +6,10 @@ console.log('API_URL:', API_URL);
 
 export const fetchCars = async (): Promise<Car[]> => {
   const response = await fetch(`${API_URL}/api/cars`);
+  console.log('Fetch cars response:', response);
   if (!response.ok) throw new Error('Failed to fetch cars');
   const { data } = await response.json();
+  console.log('Fetched cars data:', data);
   return data.map((car: Car) => ({ ...car, id: car.id }));
 };
 
