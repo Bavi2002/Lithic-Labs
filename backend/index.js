@@ -1,13 +1,14 @@
-import express, { json } from "express";
+import express from "express";
 import carRoutes from "./routes/cars.js";
 import bookingRoutes from "./routes/bookings.js";
 import cors from "cors";
+import serverless from "serverless-http";
 
 const app = express();
+
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://main.d2og3p4plv5953.amplifyapp.com",
-  "https://intent-hideously-pika.ngrok-free.app" 
+  "https://main.d2og3p4plv5953.amplifyapp.com"
 ];
 
 app.use(
@@ -29,7 +30,5 @@ app.use(express.json());
 app.use("/api/cars", carRoutes);
 app.use("/api/bookings", bookingRoutes);
 
-const port = process.env.PORT;
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
+// Export handler for Lambda
+export const handler = serverless(app);

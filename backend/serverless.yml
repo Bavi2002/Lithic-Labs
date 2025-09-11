@@ -1,0 +1,21 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: bavithran
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: car-rental-backend
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: us-east-1
+  environment:
+    NODE_ENV: lambda
+    PORT: 5000
+  # Uncomment to easily set up a custom domain. Read the docs for more details:
+  # https://www.serverless.com/framework/docs/providers/aws/guide/domains
+  # domain: api.example.com
+
+functions:
+  api:
+    handler: index.handler
+    events:
+      - httpApi: "*"

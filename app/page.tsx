@@ -16,6 +16,7 @@ export default function Home() {
       try {
         setLoading(true);
         const data = await fetchCars();
+        console.log('Loaded cars:', data);
         setCars(data);
         setFilteredCars(data);
       } catch (err) {
