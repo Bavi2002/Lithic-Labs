@@ -91,7 +91,7 @@
       "Properties": {
         "Code": {
           "S3Bucket": "serverless-framework-deployments-us-east-1-3c8d9c91-56c2",
-          "S3Key": "serverless/car-rental-backend/dev/1757609631695-2025-09-11T16:53:51.695Z/car-rental-backend.zip"
+          "S3Key": "serverless/car-rental-backend/dev/1757619093305-2025-09-11T19:31:33.305Z/car-rental-backend.zip"
         },
         "Handler": "index.handler",
         "Runtime": "nodejs20.x",
@@ -115,14 +115,14 @@
         "ApiLogGroup"
       ]
     },
-    "ApiLambdaVersion0NRahVWnYvHL5MtBn3ogGq1fnb6ypzlsLteM4yuCQ": {
+    "ApiLambdaVersionzlEkGXpPpwl8D0avhwjfLFYVcklIOxwE90JzesSNo": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "ApiLambdaFunction"
         },
-        "CodeSha256": "qfIqPhG28skmASTPQ7kxxi83DlIW1sS71Zp/NgRaIOw="
+        "CodeSha256": "ST61frFcm0nZttgdmgXrPesZoC5J4Q8yqzsIrHOjhY0="
       }
     },
     "HttpApi": {
@@ -231,7 +231,7 @@
     "ApiLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "ApiLambdaVersion0NRahVWnYvHL5MtBn3ogGq1fnb6ypzlsLteM4yuCQ"
+        "Ref": "ApiLambdaVersionzlEkGXpPpwl8D0avhwjfLFYVcklIOxwE90JzesSNo"
       },
       "Export": {
         "Name": "sls-car-rental-backend-dev-ApiLambdaFunctionQualifiedArn"
