@@ -4,10 +4,10 @@ import { Car } from '../types/car';
 
 export default function CarCard({ car }: { car: Car }) {
   return (
-    <div className="bg-slate-900 border border-slate-700 rounded-xl p-6 hover:border-green-500 transition-all duration-300 hover:shadow-xl hover:shadow-green-500/10 group">
+    <div className="bg-white border border-gray-200 rounded-2xl p-6 hover:border-green-300 transition-all duration-300 hover:shadow-xl hover:shadow-green-100 group">
       {/* Header Section */}
       <div className="mb-4">
-        <h2 className="text-xl font-bold text-white mb-2 group-hover:text-green-400 transition-colors duration-300">
+        <h2 className="text-xl font-bold text-gray-800 mb-2 group-hover:text-green-600 transition-colors duration-300">
           {car.name} - {car.model}
         </h2>
         
@@ -16,13 +16,13 @@ export default function CarCard({ car }: { car: Car }) {
           <span 
             className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
               car.availability 
-                ? 'bg-green-900/50 text-green-400 border border-green-500/30' 
-                : 'bg-red-900/50 text-red-400 border border-red-500/30'
+                ? 'bg-green-50 text-green-700 border border-green-200' 
+                : 'bg-red-50 text-red-700 border border-red-200'
             }`}
           >
             <span 
               className={`w-2 h-2 rounded-full mr-2 ${
-                car.availability ? 'bg-green-400' : 'bg-red-400'
+                car.availability ? 'bg-green-500' : 'bg-red-500'
               }`}
             ></span>
             {car.availability ? 'Available' : 'Not Available'}
@@ -33,20 +33,20 @@ export default function CarCard({ car }: { car: Car }) {
       {/* Price Section */}
       <div className="mb-4">
         <div className="flex items-baseline">
-          <span className="text-2xl font-bold text-green-400">${car.price}</span>
-          <span className="text-slate-400 ml-1">/day</span>
+          <span className="text-2xl font-bold text-green-600">${car.price}</span>
+          <span className="text-gray-500 ml-1">/day</span>
         </div>
       </div>
 
       {/* Description */}
-      <p className="text-slate-300 text-sm leading-relaxed mb-6 line-clamp-3">
+      <p className="text-gray-600 text-sm leading-relaxed mb-6 line-clamp-3">
         {car.description}
       </p>
 
       {/* Action Button */}
       <Link 
         href={`/cars/${car.id}`}
-        className="inline-flex items-center justify-center w-full bg-green-600 hover:bg-green-500 text-white font-medium py-3 px-4 rounded-lg transition-all duration-200 hover:shadow-lg hover:shadow-green-500/25 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-slate-900"
+        className="inline-flex items-center justify-center w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-medium py-3 px-4 rounded-lg transition-all duration-200 hover:shadow-lg hover:shadow-green-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transform hover:scale-[1.02]"
       >
         <svg 
           className="w-4 h-4 mr-2" 

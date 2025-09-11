@@ -98,16 +98,20 @@ export default function BookingForm({ carId }: { carId: string }) {
 
   if (success) {
     return (
-      <div className="bg-slate-900 border border-green-500/30 rounded-xl p-6 mt-6">
+      <div className="bg-white border border-green-200 rounded-2xl p-6 mt-6 shadow-lg">
         <div className="text-center">
-          <div className="text-green-400 text-5xl mb-4">✅</div>
-          <h3 className="text-white text-xl font-semibold mb-2">Booking Confirmed!</h3>
-          <p className="text-slate-300 mb-4">
+          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <h3 className="text-gray-800 text-xl font-semibold mb-2">Booking Confirmed!</h3>
+          <p className="text-gray-600 mb-4">
             Your car has been successfully booked. You will receive a confirmation email shortly.
           </p>
           <button
             onClick={() => window.location.href = '/bookings'}
-            className="bg-green-600 hover:bg-green-500 text-white px-6 py-2 rounded-lg transition-colors duration-200"
+            className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-6 py-2 rounded-lg transition-all duration-200 transform hover:scale-[1.02] shadow-md hover:shadow-lg"
           >
             View My Bookings
           </button>
@@ -117,10 +121,17 @@ export default function BookingForm({ carId }: { carId: string }) {
   }
 
   return (
-    <div className="bg-slate-900 border border-slate-700 rounded-xl p-6 mt-6">
+    <div className="bg-white border border-gray-200 rounded-2xl p-6 mt-6 shadow-lg">
       <div className="mb-6">
-        <h3 className="text-white text-xl font-semibold mb-2">Book This Vehicle</h3>
-        <p className="text-slate-400 text-sm">
+        <div className="flex items-center mb-2">
+          <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mr-3">
+            <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <h3 className="text-gray-800 text-xl font-semibold">Book This Vehicle</h3>
+        </div>
+        <p className="text-gray-500 text-sm">
           Select your rental dates to proceed with the booking
         </p>
       </div>
@@ -128,7 +139,7 @@ export default function BookingForm({ carId }: { carId: string }) {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Start Date */}
         <div>
-          <label className="block text-sm font-medium text-slate-300 mb-2">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
             Pick-up Date
           </label>
           <div className="relative">
@@ -136,16 +147,16 @@ export default function BookingForm({ carId }: { carId: string }) {
               type="date"
               {...register('startDate')}
               min={new Date().toISOString().split('T')[0]}
-              className="w-full px-4 py-3 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 focus:bg-white transition-all duration-200"
             />
             <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-              <svg className="h-5 w-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
             </div>
           </div>
           {errors.startDate && (
-            <p className="text-red-400 text-sm mt-1 flex items-center">
+            <p className="text-red-600 text-sm mt-1 flex items-center">
               <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
@@ -156,7 +167,7 @@ export default function BookingForm({ carId }: { carId: string }) {
 
         {/* End Date */}
         <div>
-          <label className="block text-sm font-medium text-slate-300 mb-2">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
             Return Date
           </label>
           <div className="relative">
@@ -164,16 +175,16 @@ export default function BookingForm({ carId }: { carId: string }) {
               type="date"
               {...register('endDate')}
               min={startDate || new Date().toISOString().split('T')[0]}
-              className="w-full px-4 py-3 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 focus:bg-white transition-all duration-200"
             />
             <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-              <svg className="h-5 w-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
             </div>
           </div>
           {errors.endDate && (
-            <p className="text-red-400 text-sm mt-1 flex items-center">
+            <p className="text-red-600 text-sm mt-1 flex items-center">
               <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
@@ -184,21 +195,26 @@ export default function BookingForm({ carId }: { carId: string }) {
 
         {/* Booking Summary */}
         {bookingDetails && (
-          <div className="bg-slate-800/50 border border-slate-600 rounded-lg p-4">
-            <h4 className="text-white font-medium mb-3">Booking Summary</h4>
+          <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+            <h4 className="text-gray-800 font-medium mb-3 flex items-center">
+              <svg className="w-5 h-5 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Booking Summary
+            </h4>
             <div className="space-y-2 text-sm">
-              <div className="flex justify-between text-slate-300">
+              <div className="flex justify-between text-gray-600">
                 <span>Rental Duration:</span>
-                <span className="text-white">{bookingDetails.days} day{bookingDetails.days !== 1 ? 's' : ''}</span>
+                <span className="text-gray-800 font-medium">{bookingDetails.days} day{bookingDetails.days !== 1 ? 's' : ''}</span>
               </div>
-              <div className="flex justify-between text-slate-300">
+              <div className="flex justify-between text-gray-600">
                 <span>Daily Rate:</span>
-                <span className="text-white">${car?.price || 0}</span>
+                <span className="text-gray-800 font-medium">${car?.price || 0}</span>
               </div>
-              <div className="border-t border-slate-600 pt-2 mt-2">
+              <div className="border-t border-green-200 pt-2 mt-2">
                 <div className="flex justify-between font-semibold">
-                  <span className="text-slate-300">Total Amount:</span>
-                  <span className="text-green-400 text-lg">${bookingDetails.totalPrice}</span>
+                  <span className="text-gray-700">Total Amount:</span>
+                  <span className="text-green-600 text-lg">${bookingDetails.totalPrice}</span>
                 </div>
               </div>
             </div>
@@ -207,23 +223,23 @@ export default function BookingForm({ carId }: { carId: string }) {
 
         {/* Error Message */}
         {error && (
-          <div className="bg-red-900/20 border border-red-500/30 rounded-lg p-4 flex items-start">
-            <svg className="w-5 h-5 text-red-400 mt-0.5 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-start">
+            <svg className="w-5 h-5 text-red-500 mt-0.5 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <p className="text-red-400 text-sm">{error}</p>
+            <p className="text-red-700 text-sm">{error}</p>
           </div>
         )}
 
         {/* Auth Warning */}
         {!user && (
-          <div className="bg-yellow-900/20 border border-yellow-500/30 rounded-lg p-4 flex items-start">
-            <svg className="w-5 h-5 text-yellow-400 mt-0.5 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 flex items-start">
+            <svg className="w-5 h-5 text-yellow-600 mt-0.5 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
             </svg>
             <div>
-              <p className="text-yellow-400 text-sm font-medium">Login Required</p>
-              <p className="text-yellow-300 text-sm mt-1">You must be logged in to book a car.</p>
+              <p className="text-yellow-800 text-sm font-medium">Login Required</p>
+              <p className="text-yellow-700 text-sm mt-1">You must be logged in to book a car.</p>
             </div>
           </div>
         )}
@@ -232,7 +248,7 @@ export default function BookingForm({ carId }: { carId: string }) {
         <button
           type="submit"
           disabled={!user || isLoading}
-          className="w-full bg-green-600 hover:bg-green-500 disabled:bg-slate-600 disabled:cursor-not-allowed text-white font-medium py-3 px-4 rounded-lg transition-all duration-200 hover:shadow-lg hover:shadow-green-500/25 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-slate-900 flex items-center justify-center"
+          className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed text-white font-medium py-3 px-4 rounded-lg transition-all duration-200 hover:shadow-lg hover:shadow-green-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transform hover:scale-[1.02] flex items-center justify-center"
         >
           {isLoading ? (
             <>
