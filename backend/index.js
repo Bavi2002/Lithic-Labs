@@ -6,7 +6,8 @@ import cors from "cors";
 const app = express();
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://main.d2og3p4plv5953.amplifyapp.com" 
+  "https://main.d2og3p4plv5953.amplifyapp.com",
+  "https://intent-hideously-pika.ngrok-free.app" 
 ];
 
 app.use(
