@@ -1,7 +1,7 @@
 import { Car } from '../types/car';
 import { Booking } from '../types/booking';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const fetchCars = async (): Promise<Car[]> => {
   const response = await fetch(`${API_URL}/api/cars`);

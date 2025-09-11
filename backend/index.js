@@ -6,7 +6,7 @@ import cors from "cors";
 const app = express();
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "https://main.d2og3p4plv5953.amplifyapp.com",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
