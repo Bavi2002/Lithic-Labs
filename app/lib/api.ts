@@ -2,6 +2,7 @@ import { Car } from '../types/car';
 import { Booking } from '../types/booking';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
+console.log('API_URL:', API_URL);
 
 export const fetchCars = async (): Promise<Car[]> => {
   const response = await fetch(`${API_URL}/api/cars`);
@@ -11,14 +12,14 @@ export const fetchCars = async (): Promise<Car[]> => {
 };
 
 export const fetchCar = async (id: string): Promise<Car> => {
-  const response = await fetch(`http://localhost:5000/api/cars/${id}`);
+  const response = await fetch(`${API_URL}/api/cars/${id}`);
   if (!response.ok) throw new Error('Failed to fetch car');
   const { data } = await response.json();
   return { ...data, id: data.id };
 };
 
 export const fetchBookings = async (userId: string): Promise<Booking[]> => {
-  const response = await fetch(`http://localhost:5000/api/bookings?userId=${userId}`);
+  const response = await fetch(`${API_URL}/api/bookings?userId=${userId}`);
   if (!response.ok) throw new Error('Failed to fetch bookings');
   const { data } = await response.json();
   return data.map((booking: Booking) => ({ ...booking, id: booking.id }));
@@ -30,7 +31,7 @@ export const createBooking = async (bookingData: {
   startDate: Date;
   endDate: Date;
 }): Promise<Booking> => {
-  const response = await fetch('http://localhost:5000/api/bookings', {
+  const response = await fetch(`${API_URL}/api/bookings`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -46,7 +47,7 @@ export const createBooking = async (bookingData: {
 };
 
 export const addCar = async (carData: { name: string; model: string; price: number; description: string }): Promise<Car> => {
-  const response = await fetch('http://localhost:5000/api/cars', {
+  const response = await fetch(`${API_URL}/api/cars`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(carData),
@@ -57,7 +58,7 @@ export const addCar = async (carData: { name: string; model: string; price: numb
 };
 
 export const updateCarAvailability = async (id: string, availability: boolean): Promise<Car> => {
-  const response = await fetch(`http://localhost:5000/api/cars/${id}/availability`, {
+  const response = await fetch(`${API_URL}/api/cars/${id}/availability`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ availability }),
