@@ -153,7 +153,7 @@ export default function Login() {
             {/* Footer */}
             <div className="mt-8 pt-6 border-t border-gray-100">
               <p className="text-center text-sm text-gray-600">
-                Don't have an account?{" "}
+                Don&apos;t have an account?{" "}
                 <a href="#" className="font-medium text-green-600 hover:text-green-700 transition-colors duration-200">
                   Create one here
                 </a>

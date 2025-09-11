@@ -6,6 +6,7 @@ import { fetchBookings, fetchCar } from '../lib/api';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import { Car } from '../types/car';
+import Link from 'next/link';
 
 export default function Bookings() {
   const { user } = useSelector((state: RootState) => state.auth);
@@ -121,9 +122,9 @@ export default function Bookings() {
                 </div>
                 <h3 className="text-gray-900 text-2xl font-bold mb-4">No bookings yet</h3>
                 <p className="text-gray-600 mb-8 leading-relaxed">
-                  You haven't made any car reservations yet. Start exploring our premium collection!
+                  You haven&apos;t made any car reservations yet. Start exploring our premium collection!
                 </p>
-                <a
+                <Link
                   href="/"
                   className="inline-flex items-center bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold px-8 py-4 rounded-xl transition-all duration-200 transform hover:scale-105 shadow-xl hover:shadow-2xl"
                 >
@@ -131,7 +132,7 @@ export default function Bookings() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                   </svg>
                   Browse Cars
-                </a>
+                </Link>
               </div>
             </div>
           ) : (
