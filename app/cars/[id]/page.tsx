@@ -77,7 +77,7 @@ export default function CarDetails() {
             <div className="text-slate-400 text-6xl mb-4">🚗</div>
             <h2 className="text-white text-2xl font-bold mb-2">Car Not Found</h2>
             <p className="text-slate-400 mb-6">
-              The car you're looking for doesn't exist or may have been removed.
+              The car you&apos;re looking for doesn&apos;t exist or may have been removed.
             </p>
             <button 
               onClick={() => router.push('/')} 

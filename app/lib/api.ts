@@ -1,8 +1,10 @@
 import { Car } from '../types/car';
 import { Booking } from '../types/booking';
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+
 export const fetchCars = async (): Promise<Car[]> => {
-  const response = await fetch('http://localhost:5000/api/cars');
+  const response = await fetch(`${API_URL}/api/cars`);
   if (!response.ok) throw new Error('Failed to fetch cars');
   const { data } = await response.json();
   return data.map((car: Car) => ({ ...car, id: car.id }));
