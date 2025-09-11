@@ -5,6 +5,10 @@ import { useState } from 'react';
 import { logOut } from '../lib/firebase';
 import { setUser } from '../redux/authSlice';
 import { RootState } from '../redux/store';
+import { GiCarWheel } from 'react-icons/gi';
+import { CiMenuBurger } from 'react-icons/ci';
+import { IoMdMenu } from 'react-icons/io';
+import { RxCross2 } from 'react-icons/rx';
 
 export default function Navbar() {
   const { user } = useSelector((state: RootState) => state.auth);
@@ -22,27 +26,24 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-white shadow-lg border-b border-green-100 sticky top-0 z-50">
+    <nav className="bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo/Brand */}
           <div className="flex-shrink-0 flex items-center">
-            <div className="w-8 h-8 bg-gradient-to-r from-green-600 to-green-700 rounded-lg flex items-center justify-center mr-3">
-              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
+            <div className="w-8 h-8 bg-green-700 rounded-lg flex items-center justify-center mr-3">
+              <GiCarWheel />
             </div>
             <Link 
               href="/" 
-              className="text-gray-800 text-xl font-bold hover:text-green-600 transition-colors duration-200"
+              className="text-gray-800 text-xl font-bold "
               onClick={closeMenu}
             >
-              CarBooking
+              <span className="text-xl font-black text-gray-900">
+                Luxe<span className="text-green-500">Ride</span>
+              </span>
             </Link>
           </div>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-2">
               {user ? (
@@ -76,7 +77,7 @@ export default function Navbar() {
                   </Link>
                   <Link
                     href="/register"
-                    className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 shadow-md hover:shadow-lg transform hover:scale-[1.02]"
+                    className="bg-green-700 hover:from-green-700 hover:to-green-800 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 shadow-md hover:shadow-lg transform hover:scale-[1.02]"
                   >
                     Register
                   </Link>
@@ -85,7 +86,6 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Mobile menu button */}
           <div className="md:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -93,38 +93,10 @@ export default function Navbar() {
               aria-expanded="false"
             >
               <span className="sr-only">Open main menu</span>
-              {/* Hamburger icon */}
-              <svg
-                className={`${isMenuOpen ? 'hidden' : 'block'} h-6 w-6`}
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-              {/* Close icon */}
-              <svg
-                className={`${isMenuOpen ? 'block' : 'hidden'} h-6 w-6`}
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
+            
+              <IoMdMenu className={`${isMenuOpen ? 'hidden' : 'block'} h-6 w-6`}/>
+
+              <RxCross2 className={`${isMenuOpen ? 'block' : 'hidden'} h-6 w-6`} />
             </button>
           </div>
         </div>
@@ -132,7 +104,7 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       <div className={`${isMenuOpen ? 'block' : 'hidden'} md:hidden`}>
-        <div className="px-4 pt-2 pb-3 space-y-2 bg-green-50 border-t border-green-100">
+        <div className="px-4 pt-2 pb-3 space-y-2 bg-white border-t border-green-100">
           {user ? (
             <>
               <Link
@@ -167,7 +139,7 @@ export default function Navbar() {
               </Link>
               <Link
                 href="/register"
-                className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white block px-4 py-3 rounded-lg text-base font-medium transition-all duration-200 shadow-md text-center"
+                className="bg-green-700 hover:from-green-700 hover:to-green-800 text-white block px-4 py-3 rounded-lg text-base font-medium transition-all duration-200 shadow-md text-center"
                 onClick={closeMenu}
               >
                 Register
