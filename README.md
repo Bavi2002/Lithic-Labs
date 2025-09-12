@@ -233,3 +233,4 @@ The backend will be deployed as a Lambda function using the Serverless Framework
 ## Deployment Links
 - **Frontend**: [https://main.d2og3p4plv5953.amplifyapp.com](https://main.d2og3p4plv5953.amplifyapp.com)
 - **Backend**: [https://kmjme0uhvf.execute-api.us-east-1.amazonaws.com](https://kmjme0uhvf.execute-api.us-east-1.amazonaws.com)
+
